@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Andrew Huang</title>
+    <meta
+      name="description"
+      content="Andrew Huang is a product and design engineer based in Vancouver."
+    />
+    <style>
+      :root {
+        --bg: #fbfaf7;
+        --text: #161514;
+        --muted: #8b8882;
+        --line: #ece8df;
+        --soft: #f2eee5;
+        --accent: #0f766e;
+        --focus: rgba(15, 118, 110, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--bg);
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--text);
+        background: var(--bg);
+        font-family:
+          ui-sans-serif,
+          "Geist",
+          "Aptos",
+          "Segoe UI",
+          sans-serif;
+        font-size: 14px;
+        line-height: 1.45;
+        letter-spacing: 0;
+      }
+
+      #paper-texture {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        min-height: 100vh;
+        justify-content: center;
+        padding: 56px 20px 64px;
+      }
+
+      .page {
+        width: min(100%, 580px);
+        display: flex;
+        flex-direction: column;
+        gap: 38px;
+      }
+
+      header,
+      section,
+      .copy {
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        gap: 3px;
+      }
+
+      .copy {
+        gap: 18px;
+      }
+
+      p,
+      h1,
+      h2 {
+        margin: 0;
+        font-size: inherit;
+        font-weight: 400;
+      }
+
+      h1 {
+        color: var(--text);
+      }
+
+      .muted,
+      .meta {
+        color: var(--muted);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 3px;
+        border-radius: 3px;
+      }
+
+      .inline-card {
+        position: relative;
+        display: inline-block;
+        color: var(--text);
+        text-decoration-line: underline;
+        text-decoration-style: dotted;
+        text-decoration-color: rgba(22, 21, 20, 0.5);
+        text-underline-offset: 3px;
+        cursor: default;
+      }
+
+      .inline-card .stack {
+        pointer-events: none;
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 10px);
+        z-index: 5;
+        width: 168px;
+        height: 112px;
+        transform: translateX(-50%);
+        opacity: 0;
+      }
+
+      .inline-card img {
+        position: absolute;
+        inset: 0;
+        width: 168px;
+        height: 112px;
+        object-fit: cover;
+        border: 1px solid rgba(22, 21, 20, 0.08);
+        background: var(--soft);
+        box-shadow: 0 18px 42px rgba(41, 35, 24, 0.16);
+        transform: translateY(8px) rotate(var(--r));
+        transition:
+          opacity 160ms ease,
+          transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .inline-card img + img {
+        transform: translate(18px, 12px) rotate(4deg);
+      }
+
+      .inline-card:hover .stack,
+      .inline-card:focus-within .stack {
+        opacity: 1;
+      }
+
+      .inline-card:hover img,
+      .inline-card:focus-within img {
+        transform: translateY(0) rotate(var(--r));
+      }
+
+      .inline-card:hover img + img,
+      .inline-card:focus-within img + img {
+        transform: translate(26px, 4px) rotate(6deg);
+      }
+
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .rows {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+        padding-top: 15px;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 20px;
+        align-items: baseline;
+        min-height: 22px;
+        border-radius: 4px;
+        transition:
+          opacity 140ms ease,
+          transform 140ms ease;
+      }
+
+      .row:hover {
+        opacity: 0.68;
+        transform: translateX(1px);
+      }
+
+      .row-title {
+        display: inline-flex;
+        align-items: center;
+        min-width: 0;
+        gap: 5px;
+      }
+
+      .arrow {
+        width: 14px;
+        height: 14px;
+        flex: 0 0 auto;
+        color: var(--accent);
+      }
+
+      .row .meta {
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      .notes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .note {
+        border-top: 1px solid var(--line);
+        padding-top: 11px;
+        color: var(--muted);
+      }
+
+      footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        color: var(--muted);
+      }
+
+      footer a {
+        color: var(--text);
+      }
+
+      @media (max-width: 560px) {
+        main {
+          justify-content: flex-start;
+          padding-top: 34px;
+        }
+
+        .page {
+          gap: 34px;
+        }
+
+        .row {
+          grid-template-columns: 1fr;
+          gap: 1px;
+        }
+
+        .row .meta {
+          text-align: left;
+          white-space: normal;
+        }
+
+        .notes {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="paper-texture" aria-hidden="true"></canvas>
+    <main>
+      <div class="page">
+        <header>
+          <h1>Andrew Huang</h1>
+          <p class="muted">design engineer at Capy, based in Vancouver</p>
+        </header>
+
+        <div class="copy">
+          <p>
+            I’m a product and design engineer with around 9 years across UX, visual systems,
+            frontend engineering, and early-stage product work.
+          </p>
+          <p>
+            Currently at
+            <a class="inline-card" href="https://capy.ai" target="_blank" rel="noreferrer">
+              Capy
+              <span class="stack" aria-hidden="true">
+                <img
+                  style="--r: -4deg"
+                  src="https://framerusercontent.com/images/aL1SjX0oVw4agsowQPdgYwUvR3E.png"
+                  alt=""
+                />
+                <img
+                  style="--r: 5deg"
+                  src="https://framerusercontent.com/images/Tkx7k7GyPBz5QmyzH1WhweVLA.png"
+                  alt=""
+                />
+              </span>
+            </a>
+            shaping AI tooling as the founding design engineer: workflows, prototypes, product
+            surfaces, and production React / Next.js interfaces.
+          </p>
+          <p>
+            Before that I worked across design and frontend at Highlight, ran
+            <span class="inline-card">
+              Designed by Androids
+              <span class="stack" aria-hidden="true">
+                <img
+                  style="--r: 3deg"
+                  src="https://framerusercontent.com/images/ryjNE2AbdxKZBBzoeshvmIPwphw.png"
+                  alt=""
+                />
+                <img
+                  style="--r: -5deg"
+                  src="https://framerusercontent.com/images/zCBvHwBoW1vfS8kdWzGynRQkoqA.png"
+                  alt=""
+                />
+              </span>
+            </span>
+            as an independent practice, and led design work for client-facing product and marketing
+            teams.
+          </p>
+          <p>
+            I like dense tools, game economies, AI interfaces, and turning fuzzy product ideas into
+            something people can actually use.
+          </p>
+        </div>
+
+        <section aria-labelledby="highlights-title">
+          <div class="section-head">
+            <h2 id="highlights-title">Highlights</h2>
+            <p class="meta">worked on</p>
+          </div>
+          <div class="rows">
+            <a class="row" href="https://capy.ai" target="_blank" rel="noreferrer">
+              <span class="row-title">
+                Capy
+                <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="meta">AI tooling, product + frontend</span>
+            </a>
+            <a class="row" href="https://andrwh.com" target="_blank" rel="noreferrer">
+              <span class="row-title">
+                Portfolio
+                <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="meta">case studies, snapshots, forever wip</span>
+            </a>
+            <a class="row" href="https://wynnmarket.com" target="_blank" rel="noreferrer">
+              <span class="row-title">
+                Wynnmarket
+                <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="meta">real-time game market browser</span>
+            </a>
+            <a class="row" href="https://www.strataigize.com" target="_blank" rel="noreferrer">
+              <span class="row-title">
+                Strataigize
+                <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="meta">client strategy + visual systems</span>
+            </a>
+            <a class="row" href="https://github.com/andrewhuhh" target="_blank" rel="noreferrer">
+              <span class="row-title">
+                Experiments
+                <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="meta">Journo, SustainX, language models</span>
+            </a>
+          </div>
+        </section>
+
+        <section aria-labelledby="notes-title">
+          <div class="section-head">
+            <h2 id="notes-title">Notes</h2>
+            <p class="meta">what I’m good at</p>
+          </div>
+          <div class="notes">
+            <p class="note">Ambiguous product idea to concrete flow, prototype, and shipped UI.</p>
+            <p class="note">Design systems that stay practical once they hit the codebase.</p>
+            <p class="note">AI product surfaces with clearer interaction patterns and less mystery meat.</p>
+            <p class="note">Fast-moving startup work where taste, judgment, and implementation all matter.</p>
+          </div>
+        </section>
+
+        <footer>
+          <a href="mailto:andrwh.design@gmail.com">andrwh.design@gmail.com</a>
+          <a href="https://www.linkedin.com/in/andrewhuhh" target="_blank" rel="noreferrer">linkedin</a>
+          <a href="https://github.com/andrewhuhh" target="_blank" rel="noreferrer">github</a>
+          <a href="https://andrwh.com" target="_blank" rel="noreferrer">andrwh.com</a>
+        </footer>
+      </div>
+    </main>
+    <script>
+      const canvas = document.getElementById("paper-texture");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const params = {
+        colorBack: [255, 255, 255],
+        colorFront: [159, 173, 188],
+        contrast: 0.3,
+        roughness: 0.4,
+        fiber: 0.3,
+        fiberSize: 0.2,
+        crumples: 0.3,
+        crumpleSize: 0.35,
+        folds: 0.65,
+        foldCount: 5,
+        drops: 0.2,
+        seed: 5.8,
+        scale: 0.6,
+      };
+
+      function seeded(seed) {
+        let state = Math.floor(seed * 100000) || 1;
+        return () => {
+          state = (state * 1664525 + 1013904223) >>> 0;
+          return state / 4294967296;
+        };
+      }
+
+      function valueNoise(x, y, rand) {
+        const xi = Math.floor(x);
+        const yi = Math.floor(y);
+        const xf = x - xi;
+        const yf = y - yi;
+        const smooth = (t) => t * t * (3 - 2 * t);
+        const hash = (a, b) => {
+          const n = Math.sin(a * 127.1 + b * 311.7 + params.seed * 17.13) * 43758.5453;
+          return n - Math.floor(n);
+        };
+        const top = hash(xi, yi) * (1 - smooth(xf)) + hash(xi + 1, yi) * smooth(xf);
+        const bottom =
+          hash(xi, yi + 1) * (1 - smooth(xf)) + hash(xi + 1, yi + 1) * smooth(xf);
+        return top * (1 - smooth(yf)) + bottom * smooth(yf);
+      }
+
+      function drawPaper() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const width = Math.ceil(window.innerWidth * dpr);
+        const height = Math.ceil(window.innerHeight * dpr);
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = `${window.innerWidth}px`;
+        canvas.style.height = `${window.innerHeight}px`;
+
+        const image = ctx.createImageData(width, height);
+        const data = image.data;
+        const rand = seeded(params.seed);
+        const foldAngles = Array.from({ length: params.foldCount }, () => rand() * Math.PI * 2);
+        const foldOffsets = Array.from({ length: params.foldCount }, () => rand() * 1200);
+        const sampleStep = Math.max(1, Math.floor(dpr));
+
+        for (let y = 0; y < height; y += sampleStep) {
+          for (let x = 0; x < width; x += sampleStep) {
+            const nx = (x / width - 0.5) / params.scale;
+            const ny = (y / height - 0.5) / params.scale;
+            let tone = 0.14;
+            tone += (valueNoise(nx * 14, ny * 14, rand) - 0.5) * params.roughness * 0.28;
+            tone +=
+              (valueNoise(nx * 46 + Math.sin(ny * 28), ny * 46, rand) - 0.5) *
+              params.fiber *
+              params.fiberSize *
+              0.72;
+            tone +=
+              (valueNoise(nx * 8, ny * 8, rand) - 0.5) *
+              params.crumples *
+              params.crumpleSize *
+              0.44;
+
+            for (let i = 0; i < params.foldCount; i++) {
+              const projection =
+                Math.cos(foldAngles[i]) * x + Math.sin(foldAngles[i]) * y + foldOffsets[i];
+              tone += Math.sin(projection / (92 + i * 31)) * params.folds * 0.032;
+            }
+
+            const speck = valueNoise(x * 0.82, y * 0.82, rand);
+            if (speck > 0.985) tone += params.drops * 0.28;
+            const mix = Math.max(0, Math.min(1, tone * (0.34 + params.contrast)));
+            const r = params.colorBack[0] * (1 - mix) + params.colorFront[0] * mix;
+            const g = params.colorBack[1] * (1 - mix) + params.colorFront[1] * mix;
+            const b = params.colorBack[2] * (1 - mix) + params.colorFront[2] * mix;
+
+            for (let py = 0; py < sampleStep; py++) {
+              for (let px = 0; px < sampleStep; px++) {
+                const index = ((y + py) * width + x + px) * 4;
+                data[index] = r;
+                data[index + 1] = g;
+                data[index + 2] = b;
+                data[index + 3] = 255;
+              }
+            }
+          }
+        }
+
+        ctx.putImageData(image, 0, 0);
+      }
+
+      drawPaper();
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(drawPaper, 120);
+      });
+    </script>
+  </body>
+</html>
