@@ -421,19 +421,32 @@
       }
 
       .theme-toggle-wrap {
-        position: relative;
-        width: 116px;
-        height: 58px;
         margin-top: 14px;
         flex-shrink: 0;
+      }
+
+      .theme-orbit-stage {
+        position: relative;
+        width: 132px;
+        height: 108px;
+        overflow: hidden;
+      }
+
+      .theme-pill {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 116px;
+        height: 58px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        overflow: hidden;
+        pointer-events: none;
       }
 
       .theme-scene {
         position: absolute;
         inset: 0;
-        border-radius: 999px;
-        overflow: hidden;
-        pointer-events: none;
       }
 
       .theme-scene__img {
@@ -460,17 +473,12 @@
 
       .theme-toggle {
         position: absolute;
-        top: 22%;
-        left: 50%;
+        inset: 0;
         z-index: 1;
-        width: 36px;
-        height: 36px;
         padding: 0;
         border: none;
         background: none;
-        overflow: hidden;
         cursor: pointer;
-        transform: translate(-50%, 0);
         transition: opacity 140ms ease;
       }
 
@@ -479,11 +487,13 @@
       }
 
       .theme-orbit {
-        display: block;
-        width: 36px;
-        height: 72px;
-        transform-origin: 18px 36px;
-        transition: transform 480ms ease;
+        position: absolute;
+        left: 50%;
+        top: calc(100% + 30px);
+        width: 0;
+        height: 0;
+        transform-origin: 0 0;
+        transition: transform 520ms ease;
       }
 
       [data-theme="dark"] .theme-orbit {
@@ -491,10 +501,20 @@
       }
 
       .theme-orbit__icon {
-        display: block;
-        width: 36px;
-        height: 36px;
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        left: -17px;
+        top: -17px;
         object-fit: contain;
+      }
+
+      .theme-orbit__sun {
+        transform: translateY(-86px);
+      }
+
+      .theme-orbit__moon {
+        transform: translateY(86px);
       }
 
       .content {
@@ -1017,16 +1037,20 @@
 
           <div class="sidebar-footer">
             <div class="theme-toggle-wrap">
-              <div class="theme-scene" aria-hidden="true">
-                <img class="theme-scene__img theme-scene__day" src="images/day.png" alt="" />
-                <img class="theme-scene__img theme-scene__night" src="images/night.png" alt="" />
+              <div class="theme-orbit-stage">
+                <div class="theme-pill" aria-hidden="true">
+                  <div class="theme-scene">
+                    <img class="theme-scene__img theme-scene__day" src="images/day.png" alt="" />
+                    <img class="theme-scene__img theme-scene__night" src="images/night.png" alt="" />
+                  </div>
+                </div>
+                <button type="button" class="theme-toggle" aria-label="Toggle light or dark mode">
+                  <span class="theme-orbit" aria-hidden="true">
+                    <img class="theme-orbit__icon theme-orbit__sun" src="images/sun.png" alt="" />
+                    <img class="theme-orbit__icon theme-orbit__moon" src="images/moon.png" alt="" />
+                  </span>
+                </button>
               </div>
-              <button type="button" class="theme-toggle" aria-label="Toggle light or dark mode">
-                <span class="theme-orbit" aria-hidden="true">
-                  <img class="theme-orbit__icon theme-orbit__sun" src="images/sun.png" alt="" />
-                  <img class="theme-orbit__icon theme-orbit__moon" src="images/moon.png" alt="" />
-                </span>
-              </button>
             </div>
           </div>
         </div>
