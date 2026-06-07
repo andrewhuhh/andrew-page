@@ -325,7 +325,7 @@
         margin-top: var(--content-row-gap);
       }
 
-      .nav-glass-highlight {
+      .glass-highlight {
         position: absolute;
         z-index: 0;
         border-radius: 6px;
@@ -338,11 +338,11 @@
         transition: opacity 160ms ease;
       }
 
-      .nav-glass-highlight.is-visible {
+      .glass-highlight.is-visible {
         opacity: 1;
       }
 
-      .nav-glass-highlight.is-ready {
+      .glass-highlight.is-ready {
         transition:
           top 220ms cubic-bezier(0.16, 1, 0.3, 1),
           left 220ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -352,7 +352,7 @@
       }
 
       @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-        .nav-glass-highlight {
+        .glass-highlight {
           background: var(--soft);
           border: 1px solid var(--line);
         }
@@ -681,6 +681,7 @@
       }
 
       .rows {
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: var(--content-row-gap);
@@ -688,20 +689,14 @@
       }
 
       .row {
+        position: relative;
+        z-index: 1;
         display: grid;
         grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1.15fr);
         gap: 16px 20px;
         align-items: baseline;
         min-height: 22px;
-        border-radius: 4px;
-        transition:
-          opacity 140ms ease,
-          transform 140ms ease;
-      }
-
-      .row:hover {
-        opacity: 0.68;
-        transform: translateX(1px);
+        border-radius: 6px;
       }
 
       .row-year {
@@ -864,7 +859,7 @@
           animation: none;
         }
 
-        .nav-glass-highlight.is-ready,
+        .glass-highlight.is-ready,
         .nav-active-dot.is-ready {
           transition: opacity 160ms ease;
         }
@@ -1000,7 +995,7 @@
           </div>
 
           <nav class="sidebar-nav" aria-label="Sections">
-            <div class="nav-glass-highlight" aria-hidden="true"></div>
+            <div class="glass-highlight" aria-hidden="true"></div>
             <div class="nav-active-dot" aria-hidden="true"></div>
             <a href="#about" class="nav-item" aria-current="page">
               <span class="nav-dot" aria-hidden="true"></span>
@@ -1140,6 +1135,7 @@
             <p class="meta">work</p>
           </div>
           <div class="rows">
+            <div class="glass-highlight" aria-hidden="true"></div>
             <a class="row" href="https://capy.ai" target="_blank" rel="noreferrer">
               <span class="row-year">2024</span>
               <span class="row-title">
@@ -1164,6 +1160,7 @@
             <p class="meta">for fun</p>
           </div>
           <div class="rows">
+            <div class="glass-highlight" aria-hidden="true"></div>
             <a class="row" href="https://wynnmarket.com" target="_blank" rel="noreferrer">
               <span class="row-year">2024</span>
               <span class="row-title">
@@ -1752,24 +1749,21 @@
         });
       });
 
-      (function initSidebarNavGlass() {
-        const nav = document.querySelector(".sidebar-nav");
-        const highlight = nav?.querySelector(".nav-glass-highlight");
-        if (!nav || !highlight) {
+      function initGlassHover(root, itemSelector, { padX = 10, padY = 3 } = {}) {
+        const highlight = root.querySelector(":scope > .glass-highlight");
+        if (!highlight) {
           return;
         }
 
-        const items = nav.querySelectorAll(":scope > .nav-item");
-        const padX = 10;
-        const padY = 3;
+        const items = root.querySelectorAll(itemSelector);
         let activeItem = null;
 
         function positionHighlight(item, animate) {
-          const navRect = nav.getBoundingClientRect();
+          const rootRect = root.getBoundingClientRect();
           const itemRect = item.getBoundingClientRect();
 
-          highlight.style.top = `${itemRect.top - navRect.top - padY}px`;
-          highlight.style.left = `${itemRect.left - navRect.left - padX}px`;
+          highlight.style.top = `${itemRect.top - rootRect.top - padY}px`;
+          highlight.style.left = `${itemRect.left - rootRect.left - padX}px`;
           highlight.style.width = `${itemRect.width + padX * 2}px`;
           highlight.style.height = `${itemRect.height + padY * 2}px`;
 
@@ -1802,10 +1796,10 @@
           item.addEventListener("focusin", () => showHighlight(item));
         });
 
-        nav.addEventListener("mouseleave", hideHighlight);
+        root.addEventListener("mouseleave", hideHighlight);
 
-        nav.addEventListener("focusout", (event) => {
-          if (!nav.contains(event.relatedTarget)) {
+        root.addEventListener("focusout", (event) => {
+          if (!root.contains(event.relatedTarget)) {
             hideHighlight();
           }
         });
@@ -1815,7 +1809,16 @@
             positionHighlight(activeItem, false);
           }
         });
-      })();
+      }
+
+      const sidebarNavEl = document.querySelector(".sidebar-nav");
+      if (sidebarNavEl) {
+        initGlassHover(sidebarNavEl, ":scope > .nav-item");
+      }
+
+      document.querySelectorAll(".rows").forEach((rows) => {
+        initGlassHover(rows, ":scope > .row", { padX: 8, padY: 4 });
+      });
     </script>
   </body>
 </html>
