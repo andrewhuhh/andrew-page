@@ -501,6 +501,7 @@
       }
 
       .content {
+        position: relative;
         min-width: 0;
         height: 100vh;
         overflow-y: auto;
@@ -509,33 +510,45 @@
         gap: 56px;
         padding: 120px 40px 80px;
         scroll-behavior: smooth;
-        scrollbar-width: thin;
-        scrollbar-color: transparent transparent;
-      }
-
-      .content:hover {
-        scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
+        scrollbar-width: none;
       }
 
       .content::-webkit-scrollbar {
+        display: none;
+      }
+
+      .content-scrollbar {
+        position: absolute;
+        top: 0;
+        right: 4px;
+        bottom: 0;
         width: 5px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 160ms ease;
       }
 
-      .content::-webkit-scrollbar-track {
-        background: transparent;
+      .content:hover .content-scrollbar,
+      .content-scrollbar.is-dragging {
+        opacity: 1;
+        pointer-events: auto;
       }
 
-      .content::-webkit-scrollbar-thumb {
+      .content-scrollbar__thumb {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-height: 96px;
+        min-height: 32px;
         border-radius: 999px;
-        background: transparent;
-        transition: background 160ms ease;
-      }
-
-      .content:hover::-webkit-scrollbar-thumb {
         background: color-mix(in srgb, var(--muted) 55%, transparent);
+        transition: background 140ms ease;
+        cursor: default;
       }
 
-      .content:hover::-webkit-scrollbar-thumb:hover {
+      .content:hover .content-scrollbar__thumb:hover,
+      .content-scrollbar.is-dragging .content-scrollbar__thumb {
         background: var(--muted);
       }
 
@@ -781,7 +794,8 @@
           filter: none;
         }
 
-        .content::-webkit-scrollbar-thumb,
+        .content-scrollbar,
+        .content-scrollbar__thumb,
         html::-webkit-scrollbar-thumb {
           transition: none;
         }
@@ -822,7 +836,10 @@
           padding: 48px 20px 64px;
           scroll-behavior: smooth;
           scrollbar-width: auto;
-          scrollbar-color: auto;
+        }
+
+        .content-scrollbar {
+          display: none;
         }
 
         html {
@@ -1005,6 +1022,10 @@
       </aside>
 
       <div class="content">
+        <div class="content-scrollbar" aria-hidden="true">
+          <div class="content-scrollbar__thumb"></div>
+        </div>
+
         <header class="mobile-header">
           <h1>Andrew Huang</h1>
           <button type="button" class="menu-toggle" aria-label="Open menu" aria-expanded="false">
@@ -1216,6 +1237,8 @@
       lucide.createIcons();
 
       const content = document.querySelector(".content");
+      const contentScrollbar = document.querySelector(".content-scrollbar");
+      const contentScrollbarThumb = document.querySelector(".content-scrollbar__thumb");
       const sections = document.querySelectorAll(".section");
       const sectionNavItems = document.querySelectorAll('a.nav-item[href^="#"]');
       const menuOverlay = document.getElementById("menu-overlay");
