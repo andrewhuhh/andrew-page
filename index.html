@@ -714,22 +714,6 @@
         text-align: right;
       }
 
-      .notes {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        padding-top: var(--content-row-gap);
-      }
-
-      .note {
-        color: var(--muted);
-      }
-
-      .note:nth-child(n + 3) {
-        border-top: 1px solid var(--line);
-        padding-top: 11px;
-      }
-
       .plushies {
         display: flex;
         align-items: center;
@@ -978,19 +962,6 @@
           text-align: left;
         }
 
-        .notes {
-          grid-template-columns: 1fr;
-        }
-
-        .note:nth-child(n + 3) {
-          border-top: none;
-          padding-top: 0;
-        }
-
-        .note:nth-child(n + 2) {
-          border-top: 1px solid var(--line);
-          padding-top: 11px;
-        }
       }
     </style>
   </head>
@@ -1022,11 +993,6 @@
               <span class="nav-dot" aria-hidden="true"></span>
               For fun
             </a>
-            <a href="#notes" class="nav-item">
-              <span class="nav-dot" aria-hidden="true"></span>
-              Notes
-            </a>
-
             <div class="nav-spacer" aria-hidden="true"></div>
 
             <a
@@ -1195,18 +1161,6 @@
             </a>
           </div>
         </section>
-
-        <section class="section" id="notes" aria-label="Notes">
-          <div class="subsection-head">
-            <p class="meta">what I’m good at</p>
-          </div>
-          <div class="notes">
-            <p class="note">Ambiguous product idea to concrete flow, prototype, and shipped UI.</p>
-            <p class="note">Design systems that stay practical once they hit the codebase.</p>
-            <p class="note">AI product surfaces with clearer interaction patterns and less mystery meat.</p>
-            <p class="note">Fast-moving startup work where taste, judgment, and implementation all matter.</p>
-          </div>
-        </section>
       </div>
     </div>
 
@@ -1312,7 +1266,7 @@
       const menuOverlay = document.getElementById("menu-overlay");
       const menuToggle = document.querySelector(".menu-toggle");
       const menuClose = document.querySelector(".menu-close");
-      const validSections = ["about", "work", "fun", "notes"];
+      const validSections = ["about", "work", "fun"];
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function setActiveSection(id) {
