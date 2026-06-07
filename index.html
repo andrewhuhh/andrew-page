@@ -40,6 +40,7 @@
         --accent: #0f766e;
         --focus: rgba(15, 118, 110, 0.2);
         --sidebar-width: 272px;
+        --section-gap: 56px;
         --glass-blur: 18px;
         --glass-highlight-bg: color-mix(in srgb, var(--bg) 72%, transparent);
         --glass-highlight-border: color-mix(in srgb, var(--text) 8%, transparent);
@@ -576,7 +577,7 @@
       .section {
         display: flex;
         flex-direction: column;
-        gap: 0;
+        gap: var(--section-gap);
         max-width: 560px;
         scroll-margin-top: 24px;
         opacity: 0.38;
