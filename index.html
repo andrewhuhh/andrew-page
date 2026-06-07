@@ -504,35 +504,23 @@
         min-width: 0;
         height: 100vh;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
         padding: 52px 40px 64px;
+        scroll-behavior: smooth;
       }
 
       .mobile-header {
         display: none;
       }
 
-      .panel {
-        display: none;
+      .section {
+        display: flex;
         flex-direction: column;
         gap: 24px;
         max-width: 560px;
-      }
-
-      .panel.active {
-        display: flex;
-        animation: panel-in 180ms ease;
-      }
-
-      @keyframes panel-in {
-        from {
-          opacity: 0;
-          transform: translateY(4px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        scroll-margin-top: 24px;
       }
 
       .copy {
@@ -746,8 +734,8 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .panel.active {
-          animation: none;
+        .content {
+          scroll-behavior: auto;
         }
 
         .label-swap__value {
@@ -782,7 +770,13 @@
         .content {
           height: auto;
           overflow: visible;
+          gap: 56px;
           padding: 0 20px 48px;
+          scroll-behavior: smooth;
+        }
+
+        .section {
+          scroll-margin-top: 72px;
         }
 
         .mobile-header {
@@ -862,22 +856,22 @@
 
           <nav class="sidebar-nav" aria-label="Sections">
             <div class="nav-glass-highlight" aria-hidden="true"></div>
-            <button type="button" class="nav-item" data-panel="about" aria-current="page">
+            <a href="#about" class="nav-item" aria-current="page">
               <span class="nav-dot" aria-hidden="true"></span>
               About
-            </button>
-            <button type="button" class="nav-item" data-panel="work">
+            </a>
+            <a href="#work" class="nav-item">
               <span class="nav-dot" aria-hidden="true"></span>
               Work
-            </button>
-            <button type="button" class="nav-item" data-panel="fun">
+            </a>
+            <a href="#fun" class="nav-item">
               <span class="nav-dot" aria-hidden="true"></span>
               For fun
-            </button>
-            <button type="button" class="nav-item" data-panel="notes">
+            </a>
+            <a href="#notes" class="nav-item">
               <span class="nav-dot" aria-hidden="true"></span>
               Notes
-            </button>
+            </a>
 
             <div class="nav-spacer" aria-hidden="true"></div>
 
@@ -937,7 +931,7 @@
           </button>
         </header>
 
-        <div class="panel active" id="panel-about" role="tabpanel" aria-labelledby="nav-about">
+        <section class="section" id="about" aria-label="About">
           <div class="copy">
             <p>
               I’m a product and design engineer with around 9 years across UX, visual systems,
@@ -988,9 +982,9 @@
               something people can actually use.
             </p>
           </div>
-        </div>
+        </section>
 
-        <div class="panel" id="panel-work" role="tabpanel" aria-labelledby="nav-work" hidden>
+        <section class="section" id="work" aria-label="Work">
           <div class="subsection-head">
             <p class="meta">work</p>
           </div>
@@ -1010,9 +1004,9 @@
               <span class="meta">design + frontend, desktop AI</span>
             </a>
           </div>
-        </div>
+        </section>
 
-        <div class="panel" id="panel-fun" role="tabpanel" aria-labelledby="nav-fun" hidden>
+        <section class="section" id="fun" aria-label="For fun">
           <div class="subsection-head">
             <p class="meta">for fun</p>
           </div>
@@ -1032,9 +1026,9 @@
               <span class="meta">little JS video game for my girlfriend</span>
             </a>
           </div>
-        </div>
+        </section>
 
-        <div class="panel" id="panel-notes" role="tabpanel" aria-labelledby="nav-notes" hidden>
+        <section class="section" id="notes" aria-label="Notes">
           <div class="subsection-head">
             <p class="meta">what I’m good at</p>
           </div>
@@ -1044,7 +1038,7 @@
             <p class="note">AI product surfaces with clearer interaction patterns and less mystery meat.</p>
             <p class="note">Fast-moving startup work where taste, judgment, and implementation all matter.</p>
           </div>
-        </div>
+        </section>
       </div>
     </div>
 
@@ -1076,22 +1070,22 @@
         </button>
       </div>
       <nav class="menu-nav" aria-label="Sections">
-        <button type="button" class="nav-item" data-panel="about">
+        <a href="#about" class="nav-item">
           <span class="nav-dot" aria-hidden="true"></span>
           About
-        </button>
-        <button type="button" class="nav-item" data-panel="work">
+        </a>
+        <a href="#work" class="nav-item">
           <span class="nav-dot" aria-hidden="true"></span>
           Work
-        </button>
-        <button type="button" class="nav-item" data-panel="fun">
+        </a>
+        <a href="#fun" class="nav-item">
           <span class="nav-dot" aria-hidden="true"></span>
           For fun
-        </button>
-        <button type="button" class="nav-item" data-panel="notes">
+        </a>
+        <a href="#notes" class="nav-item">
           <span class="nav-dot" aria-hidden="true"></span>
           Notes
-        </button>
+        </a>
         <a
           class="nav-item nav-external"
           href="https://github.com/andrewhuhh"
@@ -1140,29 +1134,47 @@
     <script>
       lucide.createIcons();
 
-      const panels = document.querySelectorAll(".panel");
-      const navItems = document.querySelectorAll("[data-panel]");
+      const content = document.querySelector(".content");
+      const sections = document.querySelectorAll(".section");
+      const sectionNavItems = document.querySelectorAll('a.nav-item[href^="#"]');
       const menuOverlay = document.getElementById("menu-overlay");
       const menuToggle = document.querySelector(".menu-toggle");
       const menuClose = document.querySelector(".menu-close");
-      const validPanels = ["about", "work", "fun", "notes"];
+      const validSections = ["about", "work", "fun", "notes"];
+      const mobileQuery = window.matchMedia("(max-width: 768px)");
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      function showPanel(id) {
-        if (!validPanels.includes(id)) {
+      function getScrollRoot() {
+        return mobileQuery.matches ? null : content;
+      }
+
+      function setActiveSection(id) {
+        sectionNavItems.forEach((item) => {
+          const sectionId = item.getAttribute("href")?.slice(1);
+          item.setAttribute("aria-current", sectionId === id ? "page" : null);
+        });
+      }
+
+      function scrollToSection(id, { updateHash = true } = {}) {
+        if (!validSections.includes(id)) {
           id = "about";
         }
 
-        panels.forEach((panel) => {
-          const isActive = panel.id === `panel-${id}`;
-          panel.classList.toggle("active", isActive);
-          panel.hidden = !isActive;
+        const target = document.getElementById(id);
+        if (!target) {
+          return;
+        }
+
+        target.scrollIntoView({
+          behavior: prefersReducedMotion ? "instant" : "smooth",
+          block: "start",
         });
 
-        navItems.forEach((item) => {
-          item.setAttribute("aria-current", item.dataset.panel === id ? "page" : null);
-        });
+        if (updateHash) {
+          history.replaceState(null, "", `#${id}`);
+        }
 
-        history.replaceState(null, "", `#${id}`);
+        setActiveSection(id);
         closeMenu();
       }
 
@@ -1181,10 +1193,12 @@
         }
       }
 
-      navItems.forEach((item) => {
-        item.addEventListener("click", () => {
-          if (item.dataset.panel) {
-            showPanel(item.dataset.panel);
+      sectionNavItems.forEach((item) => {
+        item.addEventListener("click", (event) => {
+          event.preventDefault();
+          const id = item.getAttribute("href")?.slice(1);
+          if (id) {
+            scrollToSection(id);
           }
         });
       });
@@ -1197,14 +1211,64 @@
         menuClose.addEventListener("click", closeMenu);
       }
 
-      const initialPanel = location.hash.slice(1) || "about";
-      showPanel(initialPanel);
+      const initialSection = location.hash.slice(1) || "about";
+      if (initialSection !== "about") {
+        requestAnimationFrame(() => {
+          scrollToSection(initialSection, { updateHash: false });
+        });
+      } else {
+        setActiveSection("about");
+      }
 
       window.addEventListener("hashchange", () => {
-        showPanel(location.hash.slice(1) || "about");
+        scrollToSection(location.hash.slice(1) || "about", { updateHash: false });
       });
 
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      (function initSectionObserver() {
+        let observer;
+
+        function createObserver() {
+          if (observer) {
+            observer.disconnect();
+          }
+
+          const visible = new Map();
+
+          observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                visible.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+              });
+
+              let activeId = "about";
+              let bestRatio = 0;
+
+              validSections.forEach((id) => {
+                const ratio = visible.get(id) ?? 0;
+                if (ratio > bestRatio) {
+                  bestRatio = ratio;
+                  activeId = id;
+                }
+              });
+
+              setActiveSection(activeId);
+              if (bestRatio > 0) {
+                history.replaceState(null, "", `#${activeId}`);
+              }
+            },
+            {
+              root: getScrollRoot(),
+              threshold: [0, 0.15, 0.35, 0.55, 0.75, 1],
+              rootMargin: "-12% 0px -55% 0px",
+            },
+          );
+
+          sections.forEach((section) => observer.observe(section));
+        }
+
+        createObserver();
+        mobileQuery.addEventListener("change", createObserver);
+      })();
 
       const aboutDialog = document.getElementById("about-dialog");
       const aboutOpenButton = document.querySelector("[data-about-open]");
