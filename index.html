@@ -676,6 +676,12 @@
         transform: translateX(1px);
       }
 
+      .row-year {
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
       .row-title {
         display: inline-flex;
         align-items: center;
@@ -691,9 +697,9 @@
         stroke: currentColor;
       }
 
-      .row .meta {
+      .row-desc {
+        color: var(--muted);
         text-align: right;
-        white-space: nowrap;
       }
 
       .notes {
@@ -954,12 +960,11 @@
 
         .row {
           grid-template-columns: 1fr;
-          gap: 1px;
+          gap: 2px;
         }
 
-        .row .meta {
+        .row-desc {
           text-align: left;
-          white-space: normal;
         }
 
         .notes {
@@ -1140,18 +1145,20 @@
           </div>
           <div class="rows">
             <a class="row" href="https://capy.ai" target="_blank" rel="noreferrer">
+              <span class="row-year">2024–</span>
               <span class="row-title">
                 Capy
                 <i data-lucide="arrow-up-right" class="arrow" data-stroke-width="1.5" aria-hidden="true"></i>
               </span>
-              <span class="meta">AI tooling, product + frontend</span>
+              <span class="row-desc">AI tooling, product + frontend</span>
             </a>
             <a class="row" href="https://highlightai.com" target="_blank" rel="noreferrer">
+              <span class="row-year">2022–24</span>
               <span class="row-title">
                 Highlight AI
                 <i data-lucide="arrow-up-right" class="arrow" data-stroke-width="1.5" aria-hidden="true"></i>
               </span>
-              <span class="meta">design + frontend, desktop AI</span>
+              <span class="row-desc">design + frontend, desktop AI</span>
             </a>
           </div>
         </section>
@@ -1162,18 +1169,20 @@
           </div>
           <div class="rows">
             <a class="row" href="https://wynnmarket.com" target="_blank" rel="noreferrer">
+              <span class="row-year">2024</span>
               <span class="row-title">
                 Wynnmarket
                 <i data-lucide="arrow-up-right" class="arrow" data-stroke-width="1.5" aria-hidden="true"></i>
               </span>
-              <span class="meta">real-time game market browser</span>
+              <span class="row-desc">real-time game market browser</span>
             </a>
             <a class="row" href="https://suika.live" target="_blank" rel="noreferrer">
+              <span class="row-year">2023</span>
               <span class="row-title">
                 suika.live
                 <i data-lucide="arrow-up-right" class="arrow" data-stroke-width="1.5" aria-hidden="true"></i>
               </span>
-              <span class="meta">little JS video game for my girlfriend</span>
+              <span class="row-desc">little JS video game for my girlfriend</span>
             </a>
           </div>
         </section>
