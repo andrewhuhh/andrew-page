@@ -463,29 +463,24 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
+        width: 36px;
+        height: 36px;
         padding: 0;
-        border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
-        border-radius: 50%;
-        background: color-mix(in srgb, var(--soft) 62%, transparent);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        color: var(--text);
+        border: none;
+        background: none;
         cursor: pointer;
-        transition:
-          opacity 140ms ease,
-          background 140ms ease;
+        transition: opacity 140ms ease;
       }
 
       .theme-toggle:hover {
         opacity: 0.8;
       }
 
-      .theme-toggle svg {
-        width: 16px;
-        height: 16px;
-        stroke: currentColor;
+      .theme-toggle img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        display: block;
       }
 
       .theme-toggle .theme-icon-dark {
