@@ -525,7 +525,7 @@
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: 56px;
+        gap: var(--section-gap);
         padding: 120px 40px 80px;
         scroll-behavior: smooth;
         scrollbar-width: none;
@@ -858,6 +858,10 @@
       }
 
       @media (max-width: 768px) {
+        :root {
+          --section-gap: 48px;
+        }
+
         .shell {
           grid-template-columns: 1fr;
         }
@@ -869,7 +873,7 @@
         .content {
           height: auto;
           overflow: visible;
-          gap: 48px;
+          gap: var(--section-gap);
           padding: 48px 20px 64px;
           scroll-behavior: smooth;
           scrollbar-width: auto;
