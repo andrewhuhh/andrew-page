@@ -442,6 +442,11 @@
         border-radius: 999px;
         overflow: hidden;
         pointer-events: none;
+        transition: opacity 140ms ease;
+      }
+
+      .theme-orbit-stage:has(.theme-toggle:hover) .theme-pill {
+        opacity: 0.82;
       }
 
       .theme-scene {
@@ -479,11 +484,6 @@
         border: none;
         background: none;
         cursor: pointer;
-        transition: opacity 140ms ease;
-      }
-
-      .theme-toggle:hover {
-        opacity: 0.82;
       }
 
       .theme-orbit {
@@ -855,7 +855,8 @@
         }
 
         .theme-scene__img,
-        .theme-orbit {
+        .theme-orbit,
+        .theme-pill {
           transition: none;
         }
       }
