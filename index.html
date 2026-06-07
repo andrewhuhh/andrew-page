@@ -318,8 +318,11 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 0;
         flex: 1;
+      }
+
+      .sidebar-nav > .nav-item:not(:first-of-type) {
+        margin-top: var(--content-row-gap);
       }
 
       .nav-glass-highlight {
