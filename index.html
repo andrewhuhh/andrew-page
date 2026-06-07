@@ -506,8 +506,8 @@
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: 0;
-        padding: 52px 40px 120px;
+        gap: 56px;
+        padding: 52px 40px 80px;
         scroll-behavior: smooth;
       }
 
@@ -520,14 +520,13 @@
         flex-direction: column;
         gap: 24px;
         max-width: 560px;
-        min-height: 85vh;
-        scroll-margin-top: 32px;
+        scroll-margin-top: 24px;
+        opacity: 0.38;
+        transition: opacity 180ms ease;
       }
 
-      .section + .section {
-        margin-top: clamp(96px, 14vh, 180px);
-        padding-top: clamp(96px, 14vh, 180px);
-        border-top: 1px solid var(--line);
+      .section.is-focused {
+        opacity: 1;
       }
 
       .copy {
@@ -745,6 +744,10 @@
           scroll-behavior: auto;
         }
 
+        .section {
+          transition: none;
+        }
+
         .label-swap__value {
           transition: none;
         }
@@ -777,19 +780,13 @@
         .content {
           height: auto;
           overflow: visible;
-          gap: 0;
-          padding: 0 20px 96px;
+          gap: 48px;
+          padding: 0 20px 64px;
           scroll-behavior: smooth;
         }
 
         .section {
-          min-height: auto;
           scroll-margin-top: 72px;
-        }
-
-        .section + .section {
-          margin-top: 80px;
-          padding-top: 80px;
         }
 
         .mobile-header {
@@ -1165,6 +1162,10 @@
         sectionNavItems.forEach((item) => {
           const sectionId = item.getAttribute("href")?.slice(1);
           item.setAttribute("aria-current", sectionId === id ? "page" : null);
+        });
+
+        sections.forEach((section) => {
+          section.classList.toggle("is-focused", section.id === id);
         });
       }
 
