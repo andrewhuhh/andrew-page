@@ -1467,6 +1467,72 @@
         scheduleFocusUpdate();
       })();
 
+      (function initCustomScrollbar() {
+        if (!content || !contentScrollbar || !contentScrollbarThumb) {
+          return;
+        }
+
+        const maxThumbHeight = 96;
+        const minThumbHeight = 32;
+
+        function updateScrollbarThumb() {
+          const { scrollHeight, clientHeight, scrollTop } = content;
+          const maxScroll = scrollHeight - clientHeight;
+
+          if (maxScroll <= 0) {
+            contentScrollbar.hidden = true;
+            return;
+          }
+
+          contentScrollbar.hidden = false;
+
+          const trackHeight = clientHeight;
+          const proportionalHeight = (clientHeight / scrollHeight) * trackHeight;
+          const thumbHeight = Math.min(
+            maxThumbHeight,
+            Math.max(minThumbHeight, proportionalHeight),
+          );
+          const maxThumbTravel = trackHeight - thumbHeight;
+          const thumbOffset = (scrollTop / maxScroll) * maxThumbTravel;
+
+          contentScrollbarThumb.style.height = `${thumbHeight}px`;
+          contentScrollbarThumb.style.transform = `translateY(${thumbOffset}px)`;
+        }
+
+        content.addEventListener("scroll", updateScrollbarThumb, { passive: true });
+        window.addEventListener("resize", updateScrollbarThumb, { passive: true });
+        new ResizeObserver(updateScrollbarThumb).observe(content);
+
+        contentScrollbarThumb.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+          contentScrollbar.classList.add("is-dragging");
+
+          const startY = event.clientY;
+          const startScrollTop = content.scrollTop;
+          const { clientHeight, scrollHeight } = content;
+          const maxScroll = scrollHeight - clientHeight;
+          const thumbHeight = contentScrollbarThumb.offsetHeight;
+          const maxThumbTravel = clientHeight - thumbHeight;
+
+          function onMouseMove(moveEvent) {
+            const deltaY = moveEvent.clientY - startY;
+            const scrollDelta = maxThumbTravel > 0 ? (deltaY / maxThumbTravel) * maxScroll : 0;
+            content.scrollTop = startScrollTop + scrollDelta;
+          }
+
+          function onMouseUp() {
+            contentScrollbar.classList.remove("is-dragging");
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+          }
+
+          document.addEventListener("mousemove", onMouseMove);
+          document.addEventListener("mouseup", onMouseUp);
+        });
+
+        updateScrollbarThumb();
+      })();
+
       const aboutDialog = document.getElementById("about-dialog");
       const aboutOpenButton = document.querySelector("[data-about-open]");
       const aboutCloseButton = document.querySelector("[data-about-close]");
