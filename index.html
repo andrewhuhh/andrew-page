@@ -748,6 +748,7 @@
 
         .section {
           transition: none;
+          filter: none;
         }
 
         .label-swap__value {
@@ -1156,10 +1157,6 @@
       const mobileQuery = window.matchMedia("(max-width: 768px)");
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      function getScrollRoot() {
-        return mobileQuery.matches ? null : content;
-      }
-
       function setActiveSection(id) {
         sectionNavItems.forEach((item) => {
           const sectionId = item.getAttribute("href")?.slice(1);
@@ -1240,50 +1237,144 @@
         scrollToSection(location.hash.slice(1) || "about", { updateHash: false });
       });
 
-      (function initSectionObserver() {
-        let observer;
+      (function initPointerFocus() {
+        let rafId = 0;
+        let lastPointer = { x: null, y: null };
+        let lastActiveId = null;
 
-        function createObserver() {
-          if (observer) {
-            observer.disconnect();
+        function isPointerOverContent(x, y) {
+          if (!content) {
+            return false;
           }
 
-          const visible = new Map();
-
-          observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                visible.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
-              });
-
-              let activeId = "about";
-              let bestRatio = 0;
-
-              validSections.forEach((id) => {
-                const ratio = visible.get(id) ?? 0;
-                if (ratio > bestRatio) {
-                  bestRatio = ratio;
-                  activeId = id;
-                }
-              });
-
-              setActiveSection(activeId);
-              if (bestRatio > 0) {
-                history.replaceState(null, "", `#${activeId}`);
-              }
-            },
-            {
-              root: getScrollRoot(),
-              threshold: [0, 0.15, 0.35, 0.55, 0.75, 1],
-              rootMargin: "-12% 0px -55% 0px",
-            },
-          );
-
-          sections.forEach((section) => observer.observe(section));
+          const rect = content.getBoundingClientRect();
+          return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
         }
 
-        createObserver();
-        mobileQuery.addEventListener("change", createObserver);
+        function getSectionAtY(y) {
+          for (const section of sections) {
+            const rect = section.getBoundingClientRect();
+            if (y >= rect.top && y <= rect.bottom) {
+              return section.id;
+            }
+          }
+
+          let closestId = null;
+          let closestDistance = Infinity;
+
+          sections.forEach((section) => {
+            const rect = section.getBoundingClientRect();
+            const center = rect.top + rect.height / 2;
+            const distance = Math.abs(y - center);
+
+            if (distance < closestDistance) {
+              closestDistance = distance;
+              closestId = section.id;
+            }
+          });
+
+          return closestId;
+        }
+
+        function resolveSectionAt(x, y) {
+          if (!isPointerOverContent(x, y)) {
+            return null;
+          }
+
+          const hit = document.elementFromPoint(x, y)?.closest(".section");
+          if (hit?.id && validSections.includes(hit.id)) {
+            return hit.id;
+          }
+
+          return getSectionAtY(y);
+        }
+
+        function getFallbackPoint() {
+          if (!content) {
+            return { x: window.innerWidth / 2, y: window.innerHeight * 0.4 };
+          }
+
+          const rect = content.getBoundingClientRect();
+          return {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height * 0.4,
+          };
+        }
+
+        function applyFocus(id) {
+          if (!id || !validSections.includes(id) || id === lastActiveId) {
+            return;
+          }
+
+          lastActiveId = id;
+          setActiveSection(id);
+          history.replaceState(null, "", `#${id}`);
+        }
+
+        function updateFocus() {
+          const point =
+            lastPointer.x != null && lastPointer.y != null
+              ? lastPointer
+              : getFallbackPoint();
+
+          const sectionId = resolveSectionAt(point.x, point.y);
+          if (sectionId) {
+            applyFocus(sectionId);
+          }
+        }
+
+        function scheduleFocusUpdate() {
+          if (rafId) {
+            return;
+          }
+
+          rafId = requestAnimationFrame(() => {
+            rafId = 0;
+            updateFocus();
+          });
+        }
+
+        function trackPointer(x, y) {
+          lastPointer.x = x;
+          lastPointer.y = y;
+          scheduleFocusUpdate();
+        }
+
+        document.addEventListener(
+          "mousemove",
+          (event) => {
+            trackPointer(event.clientX, event.clientY);
+          },
+          { passive: true },
+        );
+
+        document.addEventListener(
+          "touchstart",
+          (event) => {
+            const touch = event.touches[0];
+            if (touch) {
+              trackPointer(touch.clientX, touch.clientY);
+            }
+          },
+          { passive: true },
+        );
+
+        document.addEventListener(
+          "touchmove",
+          (event) => {
+            const touch = event.touches[0];
+            if (touch) {
+              trackPointer(touch.clientX, touch.clientY);
+            }
+          },
+          { passive: true },
+        );
+
+        content?.addEventListener("scroll", scheduleFocusUpdate, { passive: true });
+        window.addEventListener("scroll", scheduleFocusUpdate, { passive: true });
+        window.addEventListener("resize", scheduleFocusUpdate, { passive: true });
+
+        scheduleFocusUpdate();
       })();
 
       const aboutDialog = document.getElementById("about-dialog");
