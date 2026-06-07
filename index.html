@@ -40,6 +40,9 @@
         --accent: #0f766e;
         --focus: rgba(15, 118, 110, 0.2);
         --sidebar-width: 272px;
+        --glass-blur: 18px;
+        --glass-highlight-bg: color-mix(in srgb, var(--bg) 72%, transparent);
+        --glass-highlight-border: color-mix(in srgb, var(--text) 8%, transparent);
         color-scheme: light;
       }
 
@@ -51,6 +54,8 @@
         --soft: #1d1c1a;
         --accent: #3db9a8;
         --focus: rgba(61, 185, 168, 0.25);
+        --glass-highlight-bg: color-mix(in srgb, var(--bg) 68%, transparent);
+        --glass-highlight-border: color-mix(in srgb, var(--text) 12%, transparent);
         color-scheme: dark;
       }
 
@@ -302,10 +307,44 @@
       }
 
       .sidebar-nav {
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 0;
         flex: 1;
+      }
+
+      .nav-glass-highlight {
+        position: absolute;
+        z-index: 0;
+        border-radius: 6px;
+        pointer-events: none;
+        background: var(--glass-highlight-bg);
+        backdrop-filter: blur(var(--glass-blur)) saturate(165%);
+        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(165%);
+        border: 1px solid var(--glass-highlight-border);
+        opacity: 0;
+        transition: opacity 160ms ease;
+      }
+
+      .nav-glass-highlight.is-visible {
+        opacity: 1;
+      }
+
+      .nav-glass-highlight.is-ready {
+        transition:
+          top 220ms cubic-bezier(0.16, 1, 0.3, 1),
+          left 220ms cubic-bezier(0.16, 1, 0.3, 1),
+          width 220ms cubic-bezier(0.16, 1, 0.3, 1),
+          height 220ms cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 160ms ease;
+      }
+
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .nav-glass-highlight {
+          background: var(--soft);
+          border: 1px solid var(--line);
+        }
       }
 
       .nav-spacer {
@@ -315,6 +354,7 @@
 
       .nav-item {
         position: relative;
+        z-index: 1;
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -676,6 +716,10 @@
         .about-dialog.is-closing::backdrop {
           animation: none;
         }
+
+        .nav-glass-highlight.is-ready {
+          transition: opacity 160ms ease;
+        }
       }
 
       @media (max-width: 768px) {
@@ -769,6 +813,7 @@
           <button type="button" class="sidebar-about-link" data-about-open>about me</button>
 
           <nav class="sidebar-nav" aria-label="Sections">
+            <div class="nav-glass-highlight" aria-hidden="true"></div>
             <button type="button" class="nav-item" data-panel="about" aria-current="page">
               <span class="nav-dot" aria-hidden="true"></span>
               About
@@ -1230,6 +1275,71 @@
           setTheme(isDark ? "light" : "dark");
         });
       });
+
+      (function initSidebarNavGlass() {
+        const nav = document.querySelector(".sidebar-nav");
+        const highlight = nav?.querySelector(".nav-glass-highlight");
+        if (!nav || !highlight) {
+          return;
+        }
+
+        const items = nav.querySelectorAll(":scope > .nav-item");
+        const padX = 10;
+        const padY = 3;
+        let activeItem = null;
+
+        function positionHighlight(item, animate) {
+          const navRect = nav.getBoundingClientRect();
+          const itemRect = item.getBoundingClientRect();
+
+          highlight.style.top = `${itemRect.top - navRect.top - padY}px`;
+          highlight.style.left = `${itemRect.left - navRect.left - padX}px`;
+          highlight.style.width = `${itemRect.width + padX * 2}px`;
+          highlight.style.height = `${itemRect.height + padY * 2}px`;
+
+          if (animate && !prefersReducedMotion) {
+            highlight.classList.add("is-ready");
+          } else {
+            highlight.classList.remove("is-ready");
+            highlight.offsetHeight;
+            if (!prefersReducedMotion) {
+              highlight.classList.add("is-ready");
+            }
+          }
+
+          highlight.classList.add("is-visible");
+        }
+
+        function showHighlight(item) {
+          activeItem = item;
+          const animate = highlight.classList.contains("is-visible");
+          positionHighlight(item, animate);
+        }
+
+        function hideHighlight() {
+          activeItem = null;
+          highlight.classList.remove("is-visible", "is-ready");
+        }
+
+        items.forEach((item) => {
+          item.addEventListener("mouseenter", () => showHighlight(item));
+          item.addEventListener("focusin", () => showHighlight(item));
+        });
+
+        nav.addEventListener("mouseleave", hideHighlight);
+
+        nav.addEventListener("focusout", (event) => {
+          if (!nav.contains(event.relatedTarget)) {
+            hideHighlight();
+          }
+        });
+
+        window.addEventListener("resize", () => {
+          if (activeItem) {
+            positionHighlight(activeItem, false);
+          }
+        });
+      })();
     </script>
   </body>
 </html>
