@@ -416,15 +416,15 @@
 
       .sidebar-footer {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
+        padding-bottom: 4px;
       }
 
       .theme-toggle-wrap {
         position: relative;
-        display: inline-grid;
-        place-items: center;
-        width: 80px;
-        height: 40px;
+        width: 116px;
+        height: 58px;
+        margin-top: 14px;
         flex-shrink: 0;
       }
 
@@ -442,6 +442,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center 58%;
         transition: opacity 480ms ease;
       }
 
@@ -458,41 +459,42 @@
       }
 
       .theme-toggle {
-        position: relative;
+        position: absolute;
+        top: 22%;
+        left: 50%;
         z-index: 1;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
         width: 36px;
         height: 36px;
         padding: 0;
         border: none;
         background: none;
+        overflow: hidden;
         cursor: pointer;
+        transform: translate(-50%, 0);
         transition: opacity 140ms ease;
       }
 
       .theme-toggle:hover {
-        opacity: 0.8;
+        opacity: 0.82;
       }
 
-      .theme-toggle img {
-        width: 32px;
-        height: 32px;
+      .theme-orbit {
+        display: block;
+        width: 36px;
+        height: 72px;
+        transform-origin: 18px 36px;
+        transition: transform 480ms ease;
+      }
+
+      [data-theme="dark"] .theme-orbit {
+        transform: rotate(180deg);
+      }
+
+      .theme-orbit__icon {
+        display: block;
+        width: 36px;
+        height: 36px;
         object-fit: contain;
-        display: block;
-      }
-
-      .theme-toggle .theme-icon-dark {
-        display: none;
-      }
-
-      [data-theme="dark"] .theme-toggle .theme-icon-light {
-        display: none;
-      }
-
-      [data-theme="dark"] .theme-toggle .theme-icon-dark {
-        display: block;
       }
 
       .content {
@@ -770,9 +772,25 @@
       }
 
       .menu-nav .theme-toggle-wrap {
-        width: 72px;
-        height: 36px;
-        margin-top: 12px;
+        width: 104px;
+        height: 52px;
+        margin-top: 16px;
+      }
+
+      .menu-nav .theme-toggle {
+        width: 32px;
+        height: 32px;
+      }
+
+      .menu-nav .theme-orbit {
+        width: 32px;
+        height: 64px;
+        transform-origin: 16px 32px;
+      }
+
+      .menu-nav .theme-orbit__icon {
+        width: 32px;
+        height: 32px;
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -805,7 +823,8 @@
           transition: opacity 160ms ease;
         }
 
-        .theme-scene__img {
+        .theme-scene__img,
+        .theme-orbit {
           transition: none;
         }
       }
@@ -1003,8 +1022,10 @@
                 <img class="theme-scene__img theme-scene__night" src="images/night.png" alt="" />
               </div>
               <button type="button" class="theme-toggle" aria-label="Toggle light or dark mode">
-                <i data-lucide="sun" class="theme-icon-light" data-stroke-width="1.5" aria-hidden="true"></i>
-                <i data-lucide="moon" class="theme-icon-dark" data-stroke-width="1.5" aria-hidden="true"></i>
+                <span class="theme-orbit" aria-hidden="true">
+                  <img class="theme-orbit__icon theme-orbit__sun" src="images/sun.png" alt="" />
+                  <img class="theme-orbit__icon theme-orbit__moon" src="images/moon.png" alt="" />
+                </span>
               </button>
             </div>
           </div>
@@ -1215,8 +1236,10 @@
             <img class="theme-scene__img theme-scene__night" src="images/night.png" alt="" />
           </div>
           <button type="button" class="theme-toggle menu-theme-toggle" aria-label="Toggle light or dark mode">
-            <i data-lucide="sun" class="theme-icon-light" data-stroke-width="1.5" aria-hidden="true"></i>
-            <i data-lucide="moon" class="theme-icon-dark" data-stroke-width="1.5" aria-hidden="true"></i>
+            <span class="theme-orbit" aria-hidden="true">
+              <img class="theme-orbit__icon theme-orbit__sun" src="images/sun.png" alt="" />
+              <img class="theme-orbit__icon theme-orbit__moon" src="images/moon.png" alt="" />
+            </span>
           </button>
         </div>
       </nav>
