@@ -506,8 +506,8 @@
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: 80px;
-        padding: 52px 40px 64px;
+        gap: 0;
+        padding: 52px 40px 120px;
         scroll-behavior: smooth;
       }
 
@@ -520,7 +520,14 @@
         flex-direction: column;
         gap: 24px;
         max-width: 560px;
-        scroll-margin-top: 24px;
+        min-height: 85vh;
+        scroll-margin-top: 32px;
+      }
+
+      .section + .section {
+        margin-top: clamp(96px, 14vh, 180px);
+        padding-top: clamp(96px, 14vh, 180px);
+        border-top: 1px solid var(--line);
       }
 
       .copy {
@@ -770,13 +777,19 @@
         .content {
           height: auto;
           overflow: visible;
-          gap: 56px;
-          padding: 0 20px 48px;
+          gap: 0;
+          padding: 0 20px 96px;
           scroll-behavior: smooth;
         }
 
         .section {
+          min-height: auto;
           scroll-margin-top: 72px;
+        }
+
+        .section + .section {
+          margin-top: 80px;
+          padding-top: 80px;
         }
 
         .mobile-header {
