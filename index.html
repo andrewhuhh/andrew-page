@@ -652,11 +652,20 @@
         transform: translate(26px, 4px) rotate(6deg);
       }
 
+      .subsection-head {
+        padding-bottom: var(--content-row-gap);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section:has(.subsection-head) {
+        gap: 0;
+      }
+
       .rows {
         display: flex;
         flex-direction: column;
         gap: var(--content-row-gap);
-        padding-top: 0;
+        padding-top: var(--content-row-gap);
       }
 
       .row {
@@ -706,7 +715,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
-        padding-top: 0;
+        padding-top: var(--content-row-gap);
       }
 
       .note {
