@@ -507,6 +507,16 @@
         left: -17px;
         top: -17px;
         object-fit: contain;
+        opacity: 1;
+        filter: blur(0);
+        transition:
+          opacity 280ms ease,
+          filter 280ms ease;
+      }
+
+      .theme-orbit-stage.is-shifting .theme-orbit__icon {
+        opacity: 0.42;
+        filter: blur(4px);
       }
 
       .theme-orbit__sun {
@@ -855,7 +865,8 @@
         }
 
         .theme-scene__img,
-        .theme-orbit {
+        .theme-orbit,
+        .theme-orbit__icon {
           transition: none;
         }
       }
@@ -1711,6 +1722,36 @@
       themeToggles.forEach((toggle) => {
         toggle.addEventListener("click", () => {
           const isDark = document.documentElement.dataset.theme === "dark";
+          const stage = toggle.closest(".theme-orbit-stage");
+          const orbit = toggle.querySelector(".theme-orbit");
+
+          if (stage && orbit && !prefersReducedMotion) {
+            stage.classList.add("is-shifting");
+
+            let shiftEnded = false;
+            let shiftFallbackId = 0;
+
+            const endShift = () => {
+              if (shiftEnded) {
+                return;
+              }
+
+              shiftEnded = true;
+              stage.classList.remove("is-shifting");
+              orbit.removeEventListener("transitionend", onShiftEnd);
+              window.clearTimeout(shiftFallbackId);
+            };
+
+            const onShiftEnd = (event) => {
+              if (event.target === orbit && event.propertyName === "transform") {
+                endShift();
+              }
+            };
+
+            orbit.addEventListener("transitionend", onShiftEnd);
+            shiftFallbackId = window.setTimeout(endShift, 560);
+          }
+
           setTheme(isDark ? "light" : "dark");
         });
       });
