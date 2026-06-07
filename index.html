@@ -861,7 +861,8 @@
           animation: none;
         }
 
-        .nav-glass-highlight.is-ready {
+        .nav-glass-highlight.is-ready,
+        .nav-active-dot.is-ready {
           transition: opacity 160ms ease;
         }
 
@@ -997,6 +998,7 @@
 
           <nav class="sidebar-nav" aria-label="Sections">
             <div class="nav-glass-highlight" aria-hidden="true"></div>
+            <div class="nav-active-dot" aria-hidden="true"></div>
             <a href="#about" class="nav-item" aria-current="page">
               <span class="nav-dot" aria-hidden="true"></span>
               About
@@ -1284,16 +1286,55 @@
       const menuClose = document.querySelector(".menu-close");
       const validSections = ["about", "work", "fun"];
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const sidebarNav = document.querySelector(".sidebar-nav");
+      const navActiveDot = sidebarNav?.querySelector(".nav-active-dot");
+      let navDotPositioned = false;
+
+      function positionNavDot(navItem, { animate = true } = {}) {
+        if (!sidebarNav || !navActiveDot || !navItem || !sidebarNav.contains(navItem)) {
+          return;
+        }
+
+        const navRect = sidebarNav.getBoundingClientRect();
+        const itemRect = navItem.getBoundingClientRect();
+
+        navActiveDot.style.left = `${itemRect.left - navRect.left - 12}px`;
+        navActiveDot.style.top = `${itemRect.top - navRect.top + itemRect.height / 2}px`;
+
+        if (animate && navDotPositioned && !prefersReducedMotion) {
+          navActiveDot.classList.add("is-ready");
+        } else {
+          navActiveDot.classList.remove("is-ready");
+          navActiveDot.offsetHeight;
+          if (!prefersReducedMotion) {
+            navActiveDot.classList.add("is-ready");
+          }
+        }
+
+        navActiveDot.classList.add("is-visible");
+        navDotPositioned = true;
+      }
 
       function setActiveSection(id) {
+        let activeSidebarItem = null;
+
         sectionNavItems.forEach((item) => {
           const sectionId = item.getAttribute("href")?.slice(1);
-          item.setAttribute("aria-current", sectionId === id ? "page" : null);
+          const isActive = sectionId === id;
+          item.setAttribute("aria-current", isActive ? "page" : null);
+
+          if (isActive && sidebarNav?.contains(item)) {
+            activeSidebarItem = item;
+          }
         });
 
         sections.forEach((section) => {
           section.classList.toggle("is-focused", section.id === id);
         });
+
+        if (activeSidebarItem) {
+          positionNavDot(activeSidebarItem);
+        }
       }
 
       function scrollToSection(id, { updateHash = true } = {}) {
@@ -1501,6 +1542,13 @@
         content?.addEventListener("scroll", scheduleFocusUpdate, { passive: true });
         window.addEventListener("scroll", scheduleFocusUpdate, { passive: true });
         window.addEventListener("resize", scheduleFocusUpdate, { passive: true });
+
+        window.addEventListener("resize", () => {
+          const activeItem = sidebarNav?.querySelector('a.nav-item[aria-current="page"]');
+          if (activeItem) {
+            positionNavDot(activeItem, { animate: false });
+          }
+        });
 
         scheduleFocusUpdate();
       })();
