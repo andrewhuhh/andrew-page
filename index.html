@@ -139,22 +139,21 @@
         white-space: nowrap;
       }
 
-      .sidebar-about-link {
+      .intro-name {
         width: fit-content;
         padding: 0;
         border: none;
         background: none;
-        color: var(--muted);
+        color: var(--text);
         cursor: pointer;
         text-align: left;
-        text-decoration: underline;
-        text-decoration-color: color-mix(in srgb, var(--muted) 55%, transparent);
-        text-underline-offset: 3px;
-        transition: color 140ms ease;
+        font: inherit;
+        font-weight: 420;
+        transition: opacity 140ms ease;
       }
 
-      .sidebar-about-link:hover {
-        color: var(--text);
+      .intro-name:hover {
+        opacity: 0.68;
       }
 
       @keyframes dialog-in {
