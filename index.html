@@ -781,6 +781,11 @@
           filter: none;
         }
 
+        .content::-webkit-scrollbar-thumb,
+        html::-webkit-scrollbar-thumb {
+          transition: none;
+        }
+
         .label-swap__value {
           transition: none;
         }
@@ -822,6 +827,10 @@
 
         html {
           scrollbar-width: thin;
+          scrollbar-color: transparent transparent;
+        }
+
+        html:has(.content:hover) {
           scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
         }
 
@@ -835,10 +844,15 @@
 
         html::-webkit-scrollbar-thumb {
           border-radius: 999px;
+          background: transparent;
+          transition: background 160ms ease;
+        }
+
+        html:has(.content:hover)::-webkit-scrollbar-thumb {
           background: color-mix(in srgb, var(--muted) 55%, transparent);
         }
 
-        html::-webkit-scrollbar-thumb:hover {
+        html:has(.content:hover)::-webkit-scrollbar-thumb:hover {
           background: var(--muted);
         }
 
