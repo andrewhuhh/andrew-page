@@ -855,8 +855,7 @@
         }
 
         .theme-scene__img,
-        .theme-orbit,
-        .theme-orbit__icon {
+        .theme-orbit {
           transition: none;
         }
       }
@@ -1712,36 +1711,6 @@
       themeToggles.forEach((toggle) => {
         toggle.addEventListener("click", () => {
           const isDark = document.documentElement.dataset.theme === "dark";
-          const stage = toggle.closest(".theme-orbit-stage");
-          const orbit = toggle.querySelector(".theme-orbit");
-
-          if (stage && orbit && !prefersReducedMotion) {
-            stage.classList.add("is-shifting");
-
-            let shiftEnded = false;
-            let shiftFallbackId = 0;
-
-            const endShift = () => {
-              if (shiftEnded) {
-                return;
-              }
-
-              shiftEnded = true;
-              stage.classList.remove("is-shifting");
-              orbit.removeEventListener("transitionend", onShiftEnd);
-              window.clearTimeout(shiftFallbackId);
-            };
-
-            const onShiftEnd = (event) => {
-              if (event.target === orbit && event.propertyName === "transform") {
-                endShift();
-              }
-            };
-
-            orbit.addEventListener("transitionend", onShiftEnd);
-            shiftFallbackId = window.setTimeout(endShift, 560);
-          }
-
           setTheme(isDark ? "light" : "dark");
         });
       });
