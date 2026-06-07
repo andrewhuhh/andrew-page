@@ -510,6 +510,10 @@
         padding: 120px 40px 80px;
         scroll-behavior: smooth;
         scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+      }
+
+      .content:hover {
         scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
       }
 
@@ -523,10 +527,15 @@
 
       .content::-webkit-scrollbar-thumb {
         border-radius: 999px;
+        background: transparent;
+        transition: background 160ms ease;
+      }
+
+      .content:hover::-webkit-scrollbar-thumb {
         background: color-mix(in srgb, var(--muted) 55%, transparent);
       }
 
-      .content::-webkit-scrollbar-thumb:hover {
+      .content:hover::-webkit-scrollbar-thumb:hover {
         background: var(--muted);
       }
 
