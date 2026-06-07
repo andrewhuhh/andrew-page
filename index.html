@@ -419,16 +419,58 @@
         align-items: center;
       }
 
+      .theme-toggle-wrap {
+        position: relative;
+        display: inline-grid;
+        place-items: center;
+        width: 80px;
+        height: 40px;
+        flex-shrink: 0;
+      }
+
+      .theme-scene {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .theme-scene__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 480ms ease;
+      }
+
+      .theme-scene__night {
+        opacity: 0;
+      }
+
+      [data-theme="dark"] .theme-scene__day {
+        opacity: 0;
+      }
+
+      [data-theme="dark"] .theme-scene__night {
+        opacity: 1;
+      }
+
       .theme-toggle {
+        position: relative;
+        z-index: 1;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         width: 32px;
         height: 32px;
         padding: 0;
-        border: 1px solid var(--line);
+        border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
         border-radius: 50%;
-        background: var(--soft);
+        background: color-mix(in srgb, var(--soft) 62%, transparent);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         color: var(--text);
         cursor: pointer;
         transition:
@@ -697,7 +739,9 @@
         display: none;
       }
 
-      .menu-theme-toggle {
+      .menu-nav .theme-toggle-wrap {
+        width: 72px;
+        height: 36px;
         margin-top: 12px;
       }
 
@@ -719,6 +763,10 @@
 
         .nav-glass-highlight.is-ready {
           transition: opacity 160ms ease;
+        }
+
+        .theme-scene__img {
+          transition: none;
         }
       }
 
@@ -867,10 +915,16 @@
           </nav>
 
           <div class="sidebar-footer">
-            <button type="button" class="theme-toggle" aria-label="Toggle light or dark mode">
-              <i data-lucide="sun" class="theme-icon-light" data-stroke-width="1.5" aria-hidden="true"></i>
-              <i data-lucide="moon" class="theme-icon-dark" data-stroke-width="1.5" aria-hidden="true"></i>
-            </button>
+            <div class="theme-toggle-wrap">
+              <div class="theme-scene" aria-hidden="true">
+                <img class="theme-scene__img theme-scene__day" src="images/theme-day.png" alt="" />
+                <img class="theme-scene__img theme-scene__night" src="images/theme-night.png" alt="" />
+              </div>
+              <button type="button" class="theme-toggle" aria-label="Toggle light or dark mode">
+                <i data-lucide="sun" class="theme-icon-light" data-stroke-width="1.5" aria-hidden="true"></i>
+                <i data-lucide="moon" class="theme-icon-dark" data-stroke-width="1.5" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
         </div>
       </aside>
@@ -1069,10 +1123,16 @@
           andrwh.com
           <i data-lucide="arrow-up-right" data-stroke-width="1.5" aria-hidden="true"></i>
         </a>
-        <button type="button" class="theme-toggle menu-theme-toggle" aria-label="Toggle light or dark mode">
-          <i data-lucide="sun" class="theme-icon-light" data-stroke-width="1.5" aria-hidden="true"></i>
-          <i data-lucide="moon" class="theme-icon-dark" data-stroke-width="1.5" aria-hidden="true"></i>
-        </button>
+        <div class="theme-toggle-wrap">
+          <div class="theme-scene" aria-hidden="true">
+            <img class="theme-scene__img theme-scene__day" src="images/theme-day.png" alt="" />
+            <img class="theme-scene__img theme-scene__night" src="images/theme-night.png" alt="" />
+          </div>
+          <button type="button" class="theme-toggle menu-theme-toggle" aria-label="Toggle light or dark mode">
+            <i data-lucide="sun" class="theme-icon-light" data-stroke-width="1.5" aria-hidden="true"></i>
+            <i data-lucide="moon" class="theme-icon-dark" data-stroke-width="1.5" aria-hidden="true"></i>
+          </button>
+        </div>
       </nav>
     </div>
 
