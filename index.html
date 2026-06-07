@@ -514,7 +514,7 @@
       }
 
       .theme-orbit__moon {
-        transform: translateY(86px);
+        transform: translateY(86px) scale(-1, -1);
       }
 
       .content {
@@ -792,25 +792,36 @@
       }
 
       .menu-nav .theme-toggle-wrap {
-        width: 104px;
-        height: 52px;
         margin-top: 16px;
       }
 
-      .menu-nav .theme-toggle {
-        width: 32px;
-        height: 32px;
+      .menu-nav .theme-orbit-stage {
+        width: 116px;
+        height: 96px;
+      }
+
+      .menu-nav .theme-pill {
+        width: 104px;
+        height: 52px;
       }
 
       .menu-nav .theme-orbit {
-        width: 32px;
-        height: 64px;
-        transform-origin: 16px 32px;
+        top: calc(100% + 26px);
       }
 
       .menu-nav .theme-orbit__icon {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
+        left: -15px;
+        top: -15px;
+      }
+
+      .menu-nav .theme-orbit__sun {
+        transform: translateY(-78px);
+      }
+
+      .menu-nav .theme-orbit__moon {
+        transform: translateY(78px);
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -1255,16 +1266,20 @@
           <i data-lucide="arrow-up-right" data-stroke-width="1.5" aria-hidden="true"></i>
         </a>
         <div class="theme-toggle-wrap">
-          <div class="theme-scene" aria-hidden="true">
-            <img class="theme-scene__img theme-scene__day" src="images/day.png" alt="" />
-            <img class="theme-scene__img theme-scene__night" src="images/night.png" alt="" />
+          <div class="theme-orbit-stage">
+            <div class="theme-pill" aria-hidden="true">
+              <div class="theme-scene">
+                <img class="theme-scene__img theme-scene__day" src="images/day.png" alt="" />
+                <img class="theme-scene__img theme-scene__night" src="images/night.png" alt="" />
+              </div>
+            </div>
+            <button type="button" class="theme-toggle menu-theme-toggle" aria-label="Toggle light or dark mode">
+              <span class="theme-orbit" aria-hidden="true">
+                <img class="theme-orbit__icon theme-orbit__sun" src="images/sun.png" alt="" />
+                <img class="theme-orbit__icon theme-orbit__moon" src="images/moon.png" alt="" />
+              </span>
+            </button>
           </div>
-          <button type="button" class="theme-toggle menu-theme-toggle" aria-label="Toggle light or dark mode">
-            <span class="theme-orbit" aria-hidden="true">
-              <img class="theme-orbit__icon theme-orbit__sun" src="images/sun.png" alt="" />
-              <img class="theme-orbit__icon theme-orbit__moon" src="images/moon.png" alt="" />
-            </span>
-          </button>
         </div>
       </nav>
     </div>
