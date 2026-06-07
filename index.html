@@ -509,6 +509,25 @@
         gap: 56px;
         padding: 120px 40px 80px;
         scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
+      }
+
+      .content::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .content::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .content::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--muted) 55%, transparent);
+      }
+
+      .content::-webkit-scrollbar-thumb:hover {
+        background: var(--muted);
       }
 
       .mobile-header {
@@ -788,6 +807,30 @@
           gap: 48px;
           padding: 48px 20px 64px;
           scroll-behavior: smooth;
+          scrollbar-width: auto;
+          scrollbar-color: auto;
+        }
+
+        html {
+          scrollbar-width: thin;
+          scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
+        }
+
+        html::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        html::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        html::-webkit-scrollbar-thumb {
+          border-radius: 999px;
+          background: color-mix(in srgb, var(--muted) 55%, transparent);
+        }
+
+        html::-webkit-scrollbar-thumb:hover {
+          background: var(--muted);
         }
 
         .section {
