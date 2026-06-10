@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Strataigize Case Study</title>
+    <meta
+      name="description"
+      content="A Strataigize branding and web design case study by Andrew Huang."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Newsreader:opsz,wght@6..72,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background: #141414;
+        --text: #ffffff;
+        --muted: rgba(255, 255, 255, 0.5);
+        --orange: #df5f1b;
+        --orange-dark: #722902;
+        --orange-mid: #cd6127;
+        --orange-light: #e8974e;
+        --panel: #050505;
+        --browser: #101010;
+        --browser-bar: #2e2e2e;
+        --inner-margins: 48px;
+        --block-margins: 30px;
+        --h1: 48px;
+        --h2: 36px;
+        --h4: 18px;
+        --body: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--background);
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(223, 95, 27, 0.12), transparent 21rem),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+          var(--background);
+        background-size: auto, 128px 128px, auto;
+        color: var(--text);
+        font-family: "Barlow Condensed", "Aptos", "Segoe UI", sans-serif;
+        font-size: var(--body);
+        font-weight: 300;
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        content: "";
+        opacity: 0.18;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      }
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+
+      a:hover {
+        color: #ffd1b9;
+      }
+
+      p,
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-weight: inherit;
+      }
+
+      ol,
+      ul {
+        margin: 0;
+        padding-left: 27px;
+      }
+
+      li + li {
+        margin-top: 2px;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .page {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+        width: min(100%, 1024px);
+        margin: 0 auto;
+        padding: 50px 48px;
+      }
+
+      .section {
+        width: 100%;
+        padding: 50px 0 25px;
+      }
+
+      .section:first-child {
+        padding-top: 50px;
+      }
+
+      .inner {
+        display: flex;
+        flex-direction: column;
+        gap: var(--inner-margins);
+        width: 100%;
+        max-width: 928px;
+        margin: 0 auto;
+      }
+
+      .section-kicker {
+        color: var(--muted);
+        font-size: var(--h4);
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      .hero-heading {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .display {
+        font-family: "Newsreader", Georgia, serif;
+        font-size: var(--h1);
+        font-weight: 300;
+        line-height: 1;
+      }
+
+      .section-title {
+        font-family: "Newsreader", Georgia, serif;
+        font-size: var(--h2);
+        font-weight: 300;
+        line-height: 1;
+      }
+
+      .section-heading {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-bottom: 25px;
+      }
+
+      .split {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 50px;
+        align-items: flex-start;
+      }
+
+      .split > * {
+        flex: 1 1 375px;
+      }
+
+      .case-summary {
+        min-height: 213px;
+        gap: 100px;
+      }
+
+      .body-copy {
+        line-height: 1.18;
+      }
+
+      .body-copy p + p {
+        margin-top: 12px;
+      }
+
+      .detail-list {
+        display: flex;
+        flex: 0 0 200px;
+        flex-direction: column;
+        gap: 15px;
+        justify-content: center;
+        width: 200px;
+        line-height: 1;
+      }
+
+      .detail-list h3 {
+        margin-bottom: 4px;
+        font-size: var(--h4);
+        font-weight: 400;
+      }
+
+      .media-column {
+        display: flex;
+        flex-direction: column;
+        gap: var(--block-margins);
+      }
+
+      .hero-media-stack {
+        position: relative;
+      }
+
+      .hero-shadow {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        border-radius: 8px;
+        filter: blur(100px);
+        mix-blend-mode: soft-light;
+        opacity: 0.5;
+        object-fit: cover;
+      }
+
+      .hero-media-stack .browser-card {
+        position: relative;
+        z-index: 1;
+      }
+
+      .browser-card,
+      .wide-card,
+      .short-browser {
+        overflow: hidden;
+        border-radius: 5px;
+        background: linear-gradient(130deg, var(--orange-mid) 13%, var(--orange-light) 50%, var(--orange-dark) 87%);
+      }
+
+      .browser-card {
+        aspect-ratio: 800 / 420;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 20px 40px 0;
+      }
+
+      .browser-window {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        aspect-ratio: 720 / 374;
+        padding: 6px 10px 0;
+        border-radius: 5px 5px 0 0;
+        background: var(--browser);
+      }
+
+      .browser-top {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+      }
+
+      .dots {
+        display: flex;
+        flex: 0 0 auto;
+        gap: 2px;
+      }
+
+      .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 999px;
+      }
+
+      .dot.dark {
+        background: #ac4813;
+      }
+
+      .dot.mid {
+        background: #ec9161;
+      }
+
+      .dot.light {
+        background: #ffd1b9;
+      }
+
+      .browser-line {
+        height: 5px;
+        flex: 1;
+        border-radius: 999px;
+        background: var(--browser-bar);
+      }
+
+      .screen {
+        position: relative;
+        flex: 1;
+        overflow: hidden;
+        background:
+          linear-gradient(180deg, transparent 68%, rgba(223, 95, 27, 0.24)),
+          #000;
+      }
+
+      .screen::before {
+        position: absolute;
+        inset: 18% 12%;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        content: "";
+      }
+
+      .screen::after {
+        position: absolute;
+        inset: auto 0 0;
+        height: 42%;
+        background: linear-gradient(0deg, rgba(223, 95, 27, 0.4), transparent);
+        content: "";
+      }
+
+      .challenge .inner {
+        gap: 0;
+      }
+
+      .text-area {
+        display: flex;
+        flex-direction: column;
+        gap: var(--block-margins);
+      }
+
+      .image-grid {
+        display: flex;
+        flex-direction: column;
+        gap: var(--block-margins);
+      }
+
+      .brand-grid-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 800 / 328;
+        overflow: hidden;
+        border-radius: 5px;
+        background: #000;
+      }
+
+      .brand-grid-card img {
+        width: 112%;
+        max-width: none;
+        transform: rotate(-18deg) skewX(30deg) scaleY(0.87);
+      }
+
+      .brand-grid-card::after {
+        position: absolute;
+        bottom: -115px;
+        left: -73px;
+        width: 433px;
+        height: 116px;
+        border-radius: 500px;
+        background: var(--orange);
+        filter: blur(60px);
+        opacity: 0.5;
+        transform: rotate(7deg);
+        content: "";
+      }
+
+      .image-row {
+        display: flex;
+        gap: var(--block-margins);
+      }
+
+      .square-card {
+        position: relative;
+        display: flex;
+        flex: 1 1 0;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        min-width: 0;
+        overflow: hidden;
+        border-radius: 5px;
+        background: #000;
+      }
+
+      .logo-mark {
+        width: 48%;
+        aspect-ratio: 1;
+        transform: rotate(-14deg);
+        background:
+          linear-gradient(140deg, transparent 41%, #ffffff 41% 58%, transparent 58%),
+          linear-gradient(40deg, transparent 42%, var(--orange) 42% 57%, transparent 57%);
+        filter: drop-shadow(0 0 40px rgba(223, 95, 27, 0.5));
+      }
+
+      .square-card img {
+        width: 103%;
+        max-width: none;
+      }
+
+      .system-title {
+        flex: 0 0 250px;
+        width: 250px;
+      }
+
+      .strip-card {
+        aspect-ratio: 800 / 240;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 5px;
+        background: #141414;
+      }
+
+      .strip-card img {
+        width: 102%;
+        max-width: none;
+      }
+
+      .short-browser {
+        aspect-ratio: 928 / 191;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        padding: 30px 40px 0 0;
+      }
+
+      .short-browser .browser-window {
+        aspect-ratio: 888 / 171;
+        gap: 12px;
+        padding: 12px 10px 0 0;
+      }
+
+      .short-browser .browser-line {
+        height: 20px;
+        border-radius: 0 10px 10px 0;
+      }
+
+      .short-browser .dot {
+        width: 20px;
+        height: 20px;
+      }
+
+      .header-preview {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        padding: 0 48px;
+        border-radius: 5px;
+        background: rgba(20, 20, 20, 0.9);
+        box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.04);
+      }
+
+      .header-preview span {
+        font-size: clamp(20px, 5vw, 58px);
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
+      .header-preview span::first-letter {
+        color: var(--orange);
+      }
+
+      .book-now {
+        position: absolute;
+        right: 28px;
+        bottom: 27px;
+        z-index: 2;
+        padding: 12px 20px;
+        border-radius: 3px;
+        background: var(--orange);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 400;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      .browser-card.has-nav {
+        position: relative;
+      }
+
+      .site-nav {
+        position: absolute;
+        right: 40px;
+        bottom: 16px;
+        left: 40px;
+        z-index: 2;
+        display: flex;
+        gap: 28px;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 14px;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+
+      .site-nav span:last-of-type {
+        margin-right: auto;
+      }
+
+      .fade-in {
+        animation: rise 700ms ease both;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 760px) {
+        :root {
+          --inner-margins: 34px;
+          --block-margins: 18px;
+          --h1: clamp(35px, 11vw, 48px);
+          --h2: clamp(30px, 8vw, 36px);
+          --body: 17px;
+        }
+
+        .page {
+          padding: 20px;
+        }
+
+        .section,
+        .section:first-child {
+          padding: 34px 0 12px;
+        }
+
+        .case-summary {
+          min-height: 0;
+          gap: 30px;
+        }
+
+        .detail-list {
+          flex: 1 1 100%;
+          width: 100%;
+        }
+
+        .split {
+          gap: 20px;
+        }
+
+        .split > * {
+          flex-basis: 100%;
+          min-width: 0;
+        }
+
+        .browser-card {
+          padding: 12px 16px 0;
+        }
+
+        .image-row {
+          flex-direction: column;
+        }
+
+        .system-title {
+          flex: 1 1 100%;
+          width: 100%;
+        }
+
+        .short-browser {
+          padding: 18px 18px 0 0;
+        }
+
+        .site-nav {
+          gap: 12px;
+          right: 16px;
+          bottom: 10px;
+          left: 16px;
+          font-size: 11px;
+        }
+
+        .book-now {
+          right: 16px;
+          bottom: 14px;
+          padding: 9px 12px;
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="section hero fade-in" aria-labelledby="case-title">
+        <div class="inner">
+          <div class="hero-heading">
+            <p class="section-kicker">January 2024</p>
+            <h1 class="display" id="case-title">
+              Dressing up the hottest new marketing agency on the block.
+            </h1>
+          </div>
+
+          <div class="hero-media-stack" aria-label="Strataigize website preview">
+            <img class="hero-shadow" src="images/strataigize-shadow.png" alt="" />
+            <div class="browser-card">
+              <div class="browser-window">
+                <div class="browser-top" aria-hidden="true">
+                  <span class="dots">
+                    <span class="dot dark"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot light"></span>
+                  </span>
+                  <span class="browser-line"></span>
+                  <span class="dots">
+                    <span class="dot light"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot dark"></span>
+                  </span>
+                </div>
+                <div class="screen"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="split case-summary">
+            <div class="body-copy">
+              <p>
+                Strataigize is a results-driven app marketing agency specializing in App Store
+                Optimization (ASO) for mobile apps. Faced with challenges in brand perception,
+                Strataigize aimed to refresh its visual identity to emerge as a reputable leader in
+                the app marketing space.
+              </p>
+              <p>
+                I was brought on as the Creative Lead to spearhead a comprehensive rebranding and
+                web redesign, with the goal of boosting organic traffic, enhancing sales, and
+                solidifying their market reputation.
+              </p>
+            </div>
+
+            <aside class="detail-list" aria-label="Project details">
+              <div>
+                <h3>Timeline</h3>
+                <p>January - February 2024</p>
+              </div>
+              <div>
+                <h3>Role</h3>
+                <p>UX/UI design, branding</p>
+              </div>
+              <div>
+                <h3>Tools</h3>
+                <p>Figma, Webflow, Canva</p>
+              </div>
+              <div>
+                <h3>Links</h3>
+                <a href="https://strataigize.com" target="_blank" rel="noreferrer">strataigize.com</a>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section challenge" aria-labelledby="challenge-title">
+        <div class="inner">
+          <div class="section-heading">
+            <p class="section-kicker">The Challenge</p>
+            <div class="split">
+              <h2 class="section-title" id="challenge-title">Un-roughing the diamond</h2>
+              <div class="text-area body-copy">
+                <p>
+                  Strataigize's existing branding lacked coherency and polish, which diminished its
+                  perceived value in a competitive market. The key challenges were
+                </p>
+                <ul>
+                  <li>Inconsistency - The existing brand assets did not convey a unified message.</li>
+                  <li>
+                    Outdated Visuals - The design failed to communicate the agency's innovative
+                    approach.
+                  </li>
+                  <li>
+                    Perceived Value - The visuals did not align with the promise of expert app
+                    marketing and ASO excellence.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="brand-title">
+        <div class="inner">
+          <div class="section-heading">
+            <p class="section-kicker">Brand Design</p>
+            <div class="split">
+              <h2 class="section-title" id="brand-title">Visualizing the foundations of the brand</h2>
+              <p class="body-copy">
+                The first visual design challenge was to create a new logo. Over the course of ~2
+                weeks, I iterated through a number of different logographic concepts. Through trials,
+                vibes and error, we finally landed on our winner. A sleek abstracted S shape that
+                was both visually simple yet distinct.
+              </p>
+            </div>
+          </div>
+
+          <div class="image-grid">
+            <div class="brand-grid-card">
+              <img src="images/strataigize-brand-grid.png" alt="Strataigize visual identity explorations" />
+            </div>
+            <div class="image-row">
+              <div class="square-card" aria-label="Abstract Strataigize logo mark">
+                <div class="logo-mark"></div>
+              </div>
+              <div class="square-card">
+                <img src="images/strataigize-logo-card.png" alt="Strataigize logo card" />
+              </div>
+            </div>
+          </div>
+
+          <div class="split">
+            <h2 class="section-title system-title">Building the system</h2>
+            <div class="body-copy">
+              <p>
+                I extended the core visual themes we established in the logo design into tokens that
+                set the foundation for the rest of our branding system.
+              </p>
+              <ol>
+                <li>I settled on a black/white base shade with a striking orange accent colour.</li>
+                <li>The Gilmer font was selected to compliment the logo's custom typography.</li>
+                <li>
+                  A graphics schema was devised, composed of 3D illustrations that accompany
+                  important written content, and lifestyle photography that gives a more human touch
+                  to the brand ambience.
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="strip-card">
+            <img src="images/strataigize-system-strip.png" alt="Strataigize brand system strip" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="delivery-title">
+        <div class="inner">
+          <div class="section-heading">
+            <p class="section-kicker">Packaging and Delivery</p>
+            <div class="split">
+              <h2 class="section-title" id="delivery-title">
+                A freshly refined visual and web experience.
+              </h2>
+              <p class="body-copy">
+                The refreshed visual identity was seamlessly integrated into the new website design
+                built on Webflow, creating a coherent digital presence that resonates with
+                Strataigize's target audience.
+              </p>
+            </div>
+          </div>
+
+          <div class="media-column">
+            <div class="browser-card">
+              <div class="browser-window">
+                <div class="browser-top" aria-hidden="true">
+                  <span class="dots">
+                    <span class="dot dark"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot light"></span>
+                  </span>
+                  <span class="browser-line"></span>
+                  <span class="dots">
+                    <span class="dot light"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot dark"></span>
+                  </span>
+                </div>
+                <div class="screen"></div>
+              </div>
+            </div>
+
+            <div class="browser-card">
+              <div class="browser-window">
+                <div class="browser-top" aria-hidden="true">
+                  <span class="dots">
+                    <span class="dot dark"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot light"></span>
+                  </span>
+                  <span class="browser-line"></span>
+                  <span class="dots">
+                    <span class="dot light"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot dark"></span>
+                  </span>
+                </div>
+                <div class="screen"></div>
+              </div>
+            </div>
+
+            <div class="short-browser">
+              <div class="browser-window">
+                <div class="browser-top" aria-hidden="true">
+                  <span class="browser-line"></span>
+                  <span class="dots">
+                    <span class="dot dark"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot light"></span>
+                  </span>
+                </div>
+                <div class="header-preview"><span>STRATAIGIZE</span></div>
+              </div>
+            </div>
+
+            <div class="browser-card has-nav">
+              <div class="browser-window">
+                <div class="browser-top" aria-hidden="true">
+                  <span class="dots">
+                    <span class="dot dark"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot light"></span>
+                  </span>
+                  <span class="browser-line"></span>
+                  <span class="dots">
+                    <span class="dot light"></span>
+                    <span class="dot mid"></span>
+                    <span class="dot dark"></span>
+                  </span>
+                </div>
+                <div class="screen"></div>
+              </div>
+              <div class="site-nav" aria-hidden="true">
+                <span>Case Studies</span>
+                <span>Our Blog</span>
+              </div>
+              <a class="book-now" href="https://strataigize.com" target="_blank" rel="noreferrer">Book now</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
